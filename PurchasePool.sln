@@ -3,7 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurchasePool.Web", "PurchasePool.Web\PurchasePool.Web.csproj", "{CE306D89-A85C-4A00-85DD-5B228B1C0FCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurchasePool.Web.Tests", "PurchasePool.Web.Tests\PurchasePool.Web.Tests.csproj", "{E3CA917B-1041-43C5-BCC7-A735C337F739}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CE306D89-A85C-4A00-85DD-5B228B1C0FCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE306D89-A85C-4A00-85DD-5B228B1C0FCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE306D89-A85C-4A00-85DD-5B228B1C0FCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE306D89-A85C-4A00-85DD-5B228B1C0FCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3CA917B-1041-43C5-BCC7-A735C337F739}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3CA917B-1041-43C5-BCC7-A735C337F739}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3CA917B-1041-43C5-BCC7-A735C337F739}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3CA917B-1041-43C5-BCC7-A735C337F739}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
