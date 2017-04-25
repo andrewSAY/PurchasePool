@@ -1,7 +1,7 @@
 ﻿
 namespace PurchasePool.Common.Models
 {
-    class Operator
+    public class Operator
     {
         public string Name { get; set; }
     }

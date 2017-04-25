@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace PurchasePool.DataProvider.EF.Repositories
 {
@@ -10,9 +9,9 @@ namespace PurchasePool.DataProvider.EF.Repositories
     {        
         protected readonly IQueryable<TEntity> _set;
 
-        public CommonRepository(IDataContextEF context, TrackingBehavior tracking = TrackingBehavior.NoTracking)
+        public CommonRepository(IDataContext context, TrackingBehavior tracking = TrackingBehavior.NoTracking)
         {     
-            _set = tracking == TrackingBehavior.NoTracking ? context.Set<TEntity>().AsNoTracking() :
+            _set = tracking == TrackingBehavior.NoTracking ? context.NotTrackedSet<TEntity>() :
                 context.Set<TEntity>();
         }
 

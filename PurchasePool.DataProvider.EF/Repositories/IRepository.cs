@@ -12,6 +12,6 @@ namespace PurchasePool.DataProvider.EF.Repositories
         TResult FirstBy<TResult>(Expression<Func<TEntity, bool>> condition, Expression<Func<TEntity, TResult>> filter, IEnumerable<string> includedePropertyNames);
         IEnumerable<TEntity> FindBy(Expression<Func<TEntity, bool>> condition);
         IEnumerable<TResult>FindBy<TResult>(Expression<Func<TEntity, bool>> condition, Expression<Func<TEntity, TResult>> filter, IEnumerable<string> includedePropertyNames);
-        Task<IEnumerable<TEntity>> AllAsync();       
     }
+
 }

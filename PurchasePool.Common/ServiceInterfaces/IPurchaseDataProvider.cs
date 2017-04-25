@@ -3,7 +3,7 @@ using PurchasePool.Common.Models;
 
 namespace PurchasePool.Common.ServiceInterfaces
 {
-    interface IPurchaseDataProvider:IDataServiceProvider<Purchase>
+    public interface IPurchaseDataProvider:IDataServiceProvider<Purchase>
     {
         IEnumerable<Purchase> GetByOperator(Operator operator_);
         IEnumerable<Purchase> GetByOperator(Operator operator_, int pageNumber, int pageSize);

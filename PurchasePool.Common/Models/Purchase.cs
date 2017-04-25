@@ -2,7 +2,7 @@
 
 namespace PurchasePool.Common.Models
 {
-    class Purchase
+    public class Purchase
     {
         public Guid Id { get; set; }
         public string PurchaseName {get;set;}
