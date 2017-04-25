@@ -3,14 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using PurchasePool.Common;
+using PurchasePool.Common.OrmInterfaces.EF;
 using PurchasePool.Common.Models;
 using PurchasePool.Common.ServiceInterfaces;
 
 
 namespace PurchasePool.DataProvider.EF.Services
 {
-    class PurchaseService : IPurchaseDataProvider
+    public class PurchaseService : IPurchaseDataProvider
     {
+        private IDataContext _context;
+        public PurchaseService(IDataContext context)
+        {
+            _context = context;
+        }
         public void Add(Purchase entity)
         {
             throw new NotImplementedException();

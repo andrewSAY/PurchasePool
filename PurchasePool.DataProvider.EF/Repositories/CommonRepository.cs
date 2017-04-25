@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using PurchasePool.Common.OrmInterfaces.EF;
 
 namespace PurchasePool.DataProvider.EF.Repositories
 {
@@ -42,8 +43,9 @@ namespace PurchasePool.DataProvider.EF.Repositories
         }
         
         protected IQueryable<TEntity> AttachProperties(IEnumerable<string> properties)
-        {            
-            return properties.Aggregate(_set, (current, property) => current.Include(property));
+        {
+            //return properties.Aggregate(_set, (current, property) => current.Include(property));
+            throw new Exception();
         }        
     }
 }
