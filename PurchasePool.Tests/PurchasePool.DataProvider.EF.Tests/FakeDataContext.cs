@@ -11,17 +11,19 @@ namespace PurchasePool.Web.Tests.PurchasePool.DataProvider.EF.Tests
     class FakeDataContext : IDataContext
     {
         public List<Purchase> Purchases { get; set; }
-        public int changesCount = 0;
+        private int _changesCount = 0;
+        private int _changesCountAfterSave = 0;
+        public int ChangesCount { get { return _changesCountAfterSave; } set { _changesCountAfterSave = value; } }
         public void Add<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
         {
             Set<TEntity>().ToList().AddRange(entities);
-            changesCount += entities.Count();
+            _changesCount += entities.Count();
         }
 
         public void Add<TEntity>(TEntity entity) where TEntity : class
         {
             Set<TEntity>().ToList().Add(entity);
-            changesCount ++;
+            _changesCount ++;
         }
 
         public IQueryable<TEntity> NotTrackedSet<TEntity>() where TEntity : class
@@ -34,20 +36,21 @@ namespace PurchasePool.Web.Tests.PurchasePool.DataProvider.EF.Tests
             var list = Set<TEntity>().ToList();
             entities.ToList().ForEach(entity => {
                 list.Remove(entity);
-                changesCount ++;
+                _changesCount ++;
             });
-            changesCount += entities.Count();
+            _changesCount += entities.Count();
         }
 
         public void Remove<TEntity>(TEntity entity) where TEntity : class
         {
             Set<TEntity>().ToList().Remove(entity);
-            changesCount ++;
+            _changesCount ++;
         }
 
         public int SaveChanges()
         {
-            return changesCount;
+            ChangesCount = _changesCount;
+            return ChangesCount();
         }
 
         public IQueryable<TEntity> Set<TEntity>() where TEntity : class
@@ -59,12 +62,12 @@ namespace PurchasePool.Web.Tests.PurchasePool.DataProvider.EF.Tests
 
         public void Update<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
         {            
-            changesCount += entities.Count();
+            _changesCount += entities.Count();
         }
 
         public void Update<TEntity>(TEntity entity) where TEntity : class
         {            
-            changesCount++;
+            _changesCount++;
         }
     }
 }
