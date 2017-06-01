@@ -1,51 +1,101 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using PurchasePool.Common.OrmInterfaces.EF;
+using System.Threading.Tasks;
+using PurchasePool.Common.Interfaces;
+using PurchasePool.DataProvider.EF.Interfaces;
 
 namespace PurchasePool.DataProvider.EF.Repositories
 {
-    public class CommonRepository<TEntity> : IRepository<TEntity> where TEntity: class
-    {        
-        protected readonly IQueryable<TEntity> _set;
+    public class CommonRepository : IRepository
+    {
+        protected readonly IDataContextEF _context;
+        public IEntityStateCommit CommiteInterface { get; private set; }
 
-        public CommonRepository(IDataContext context, TrackingBehavior tracking = TrackingBehavior.NoTracking)
-        {     
-            _set = tracking == TrackingBehavior.NoTracking ? context.NotTrackedSet<TEntity>() :
-                context.Set<TEntity>();
+        public CommonRepository(IDataContext context)
+        {
+            _context = context as IDataContextEF;
+            CommiteInterface = new CommonStateCommiter(context);
         }
 
-        public IEnumerable<TEntity> All()
+        private IQueryable<TEntity> Set<TEntity>() where TEntity : class
         {
-            return _set.ToList();
+            return _context.Set<TEntity>().AsNoTracking();
+        }
+
+        public IEnumerable<TEntity> All<TEntity>() where TEntity : class
+        {
+            return Set<TEntity>().ToList();
         }
 
 
-        public TEntity FirstBy(Expression<Func<TEntity, bool>> condition)
+        public TEntity FirstBy<TEntity>(Expression<Func<TEntity, bool>> condition) where TEntity : class
         {
-            return FirstBy<TEntity>(condition, x => x, new List<string>());
+            return FirstBy(condition, x => x, new List<string>());
         }
 
-        public TResult FirstBy<TResult>(Expression<Func<TEntity, bool>> condition, Expression<Func<TEntity, TResult>> filter, IEnumerable<string> includedePropertyNames)
+        public TResult FirstBy<TEntity, TResult>(Expression<Func<TEntity, bool>> condition, Expression<Func<TEntity, TResult>> filter, IEnumerable<string> includedePropertyNames) where TEntity : class
         {
-            var query = AttachProperties(includedePropertyNames);
+            var query = AttachProperties<TEntity>(includedePropertyNames);
             return query.Where(condition).Select(filter).FirstOrDefault();
         }
-        public IEnumerable<TEntity> FindBy(Expression<Func<TEntity, bool>> condition)
+        public TEntity FirstBy<TEntity>(Expression<Func<TEntity, bool>> condition, IEnumerable<string> includedePropertyNames) where TEntity : class
+        {
+            return FirstBy(condition, x => x, includedePropertyNames);
+        }
+        public IEnumerable<TEntity> FindBy<TEntity>(Expression<Func<TEntity, bool>> condition) where TEntity : class
         {
             return FindBy(condition, x => x, new List<string>());
         }
-        public IEnumerable<TResult> FindBy<TResult>(Expression<Func<TEntity, bool>> condition, Expression<Func<TEntity, TResult>> filter, IEnumerable<string> includedePropertyNames)
+        public IEnumerable<TResult> FindBy<TEntity, TResult>(Expression<Func<TEntity, bool>> condition, Expression<Func<TEntity, TResult>> filter, IEnumerable<string> includedePropertyNames) where TEntity : class
         {
-            var query = AttachProperties(includedePropertyNames);
+            var query = AttachProperties<TEntity>(includedePropertyNames);
             return query.Where(condition).Select(filter).ToList();
         }
-        
-        protected IQueryable<TEntity> AttachProperties(IEnumerable<string> properties)
+        public IEnumerable<TEntity> FindBy<TEntity>(Expression<Func<TEntity, bool>> condition, IEnumerable<string> includedePropertyNames) where TEntity : class
         {
-            //return properties.Aggregate(_set, (current, property) => current.Include(property));
-            throw new Exception();
-        }        
+            return FindBy(condition, x => x, includedePropertyNames);
+        }
+
+        public async Task<IEnumerable<TEntity>> AllAsync<TEntity>() where TEntity : class
+        {
+            return await Set<TEntity>().ToListAsync();
+        }
+
+        public async Task<IEnumerable<TResult>> FindByAsync<TEntity, TResult>(Expression<Func<TEntity, bool>> condition, Expression<Func<TEntity, TResult>> filter, IEnumerable<string> includedePropertyNames) where TEntity : class
+        {
+            var query = AttachProperties<TEntity>(includedePropertyNames);
+            return await query.Where(condition).Select(filter).ToListAsync();
+        }
+
+        public async Task<TEntity> FirstByAsync<TEntity>(Expression<Func<TEntity, bool>> condition) where TEntity : class
+        {
+            return await FirstByAsync(condition, x => x, new List<string>());
+        }
+
+        public async Task<IEnumerable<TEntity>> FindByAsync<TEntity>(Expression<Func<TEntity, bool>> condition) where TEntity : class
+        {
+            return await FindByAsync(condition, x => x, new List<string>());
+        }
+        public Task<TEntity> FirstByAsync<TEntity>(Expression<Func<TEntity, bool>> condition, IEnumerable<string> includedePropertyNames) where TEntity : class
+        {
+            return FirstByAsync(condition, x => x, includedePropertyNames);
+        }
+        public async Task<TResult> FirstByAsync<TEntity, TResult>(Expression<Func<TEntity, bool>> condition, Expression<Func<TEntity, TResult>> filter, IEnumerable<string> includedePropertyNames) where TEntity : class
+        {
+            var query = AttachProperties<TEntity>(includedePropertyNames);
+            return await query.Where(condition).Select(filter).FirstOrDefaultAsync();
+        }
+        public Task<IEnumerable<TEntity>> FindByAsync<TEntity>(Expression<Func<TEntity, bool>> condition, IEnumerable<string> includedePropertyNames) where TEntity : class
+        {
+            return FindByAsync(condition, x => x, includedePropertyNames);
+        }
+
+        protected IQueryable<TEntity> AttachProperties<TEntity>(IEnumerable<string> properties) where TEntity : class
+        {
+            return properties.Aggregate(Set<TEntity>(), (current, property) => current.Include(property));
+        }
     }
 }

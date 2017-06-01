@@ -1,18 +1,17 @@
-﻿using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace PurchasePool.Common.OrmInterfaces.EF
+namespace PurchasePool.Common.Interfaces
 {
-    public interface IDataContext
+    public interface IEntityStateCommit
     {
-        int SaveChanges();
-        IQueryable<TEntity> Set<TEntity>() where TEntity : class;
-        IQueryable<TEntity> NotTrackedSet<TEntity>() where TEntity : class;
         void Add<TEntity>(TEntity entity) where TEntity : class;
         void Add<TEntity>(IEnumerable<TEntity> entities) where TEntity : class;
         void Update<TEntity>(TEntity entity) where TEntity : class;
         void Update<TEntity>(IEnumerable<TEntity> entities) where TEntity : class;
         void Remove<TEntity>(TEntity entity) where TEntity : class;
         void Remove<TEntity>(IEnumerable<TEntity> entities) where TEntity : class;
+        int CommitState();
+        Task<int> CommitStateAsync();
     }
 }

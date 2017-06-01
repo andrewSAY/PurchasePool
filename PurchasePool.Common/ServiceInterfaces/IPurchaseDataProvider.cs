@@ -3,10 +3,10 @@ using PurchasePool.Common.Models;
 
 namespace PurchasePool.Common.ServiceInterfaces
 {
-    public interface IPurchaseDataProvider:IDataServiceProvider<Purchase>
+    public interface IPurchaseDataProvider:IDataServiceProvider<Product>
     {
-        IEnumerable<Purchase> GetByOperator(Operator operator_);
-        IEnumerable<Purchase> GetByOperator(Operator operator_, int pageNumber, int pageSize);
-        IEnumerable<Purchase> GetByOperator(Operator operator_, int pageNumber, int pageSize, string sortFieldName, SortDirection direction);
+        IEnumerable<Product> GetByOperator(Category operator_);
+        IEnumerable<Product> GetByOperator(Category operator_, int pageNumber, int pageSize);
+        IEnumerable<Product> GetByOperator(Category operator_, int pageNumber, int pageSize, string sortFieldName, SortDirection direction);
     }
 }

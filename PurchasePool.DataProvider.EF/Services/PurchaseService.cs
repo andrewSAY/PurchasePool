@@ -17,37 +17,37 @@ namespace PurchasePool.DataProvider.EF.Services
         {
             _context = context;
         }
-        public void Add(Purchase entity)
+        public void Add(Product entity)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Purchase> GetAll()
+        public IEnumerable<Product> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Purchase> GetByOperator(Operator operator_)
+        public IEnumerable<Product> GetByOperator(Category operator_)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Purchase> GetByOperator(Operator operator_, int pageNumber, int pageSize)
+        public IEnumerable<Product> GetByOperator(Category operator_, int pageNumber, int pageSize)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Purchase> GetByOperator(Operator operator_, int pageNumber, int pageSize, string sortFieldName, SortDirection direction)
+        public IEnumerable<Product> GetByOperator(Category operator_, int pageNumber, int pageSize, string sortFieldName, SortDirection direction)
         {
             throw new NotImplementedException();
         }
 
-        public void Remove(Purchase entity)
+        public void Remove(Product entity)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(Purchase entity)
+        public void Update(Product entity)
         {
             throw new NotImplementedException();
         }
