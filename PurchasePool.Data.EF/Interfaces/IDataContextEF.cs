@@ -2,7 +2,7 @@
 using System.Data.Entity.Infrastructure;
 using PurchasePool.Common.Interfaces;
 
-namespace PurchasePool.DataProvider.EF.Interfaces
+namespace PurchasePool.Data.EF.Interfaces
 {
     public interface IDataContextEF : IDataContext
     {

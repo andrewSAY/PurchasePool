@@ -5,7 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using PurchasePool.Common.Interfaces;
-using PurchasePool.DataProvider.EF.Interfaces;
+using PurchasePool.Data.EF.Interfaces;
 
 namespace PurchasePool.DataProvider.EF.Repositories
 {

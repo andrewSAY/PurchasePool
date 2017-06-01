@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Data.Entity;
 using System.Threading.Tasks;
-using PurchasePool.DataProvider.EF.Interfaces;
+using PurchasePool.Data.EF.Interfaces;
 using PurchasePool.Common.Interfaces;
 
 namespace PurchasePool.DataProvider.EF.Repositories

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using PurchasePool.Common.Interfaces;
 
-namespace PurchasePool.DataProvider.EF.Interfaces
+namespace PurchasePool.Data.EF.Interfaces
 {
     interface IEntityStateCommitEF: IEntityStateCommit
     {
