@@ -40,10 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Operator.cs" />
-    <Compile Include="Models\Purchase.cs" />
-    <Compile Include="OrmInterfaces\EF\IDataContext.cs" />
+    <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\Product.cs" />
+    <Compile Include="Interfaces\IDataContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Interfaces\IEntityStateCommit.cs" />
+    <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="ServiceInterfaces\IDataServiceProvider.cs" />
     <Compile Include="ServiceInterfaces\IPurchaseDataProvider.cs" />
     <Compile Include="ServiceInterfaces\IService.cs" />

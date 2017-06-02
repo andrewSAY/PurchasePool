@@ -49,11 +49,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Category.cs" />
+    <Compile Include="Entities\CategoryGoodReference.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\Good.cs" />
+    <Compile Include="Initializers\CreateDatabaseInitializer.cs" />
+    <Compile Include="Initializers\NormalInitializer.cs" />
+    <Compile Include="Interfaces\IDataContextEF.cs" />
+    <Compile Include="Interfaces\IEntityStateCommitEF.cs" />
+    <Compile Include="Interfaces\IMainContainer.cs" />
+    <Compile Include="MainDataContext.cs" />
+    <Compile Include="Migrations\MainConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\PurchasePool.Common\PurchasePool.Common.csproj">
+      <Project>{7a3d8e95-824c-4d3f-be34-5874badf8e51}</Project>
+      <Name>PurchasePool.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
