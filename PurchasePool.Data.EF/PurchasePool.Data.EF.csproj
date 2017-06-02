@@ -53,8 +53,8 @@
     <Compile Include="Entities\CategoryGoodReference.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Good.cs" />
-    <Compile Include="Initializers\CreateDatabaseInitializer.cs" />
     <Compile Include="Initializers\NormalInitializer.cs" />
+    <Compile Include="Initializers\CreateDatabaseInitializer.cs" />
     <Compile Include="Interfaces\IDataContextEF.cs" />
     <Compile Include="Interfaces\IEntityStateCommitEF.cs" />
     <Compile Include="Interfaces\IMainContainer.cs" />
