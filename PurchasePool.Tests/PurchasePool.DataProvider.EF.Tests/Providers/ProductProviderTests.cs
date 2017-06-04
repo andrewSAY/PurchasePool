@@ -4,12 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using PurchasePool.Data.EF.Entities;
+using EntityCategory = PurchasePool.Data.EF.Entities.Category;
+using ModelCategory = PurchasePool.Common.Models.Category;
 using PurchasePool.DataProvider.EF;
 using PurchasePool.Common.Models;
 using PurchasePool.Tests.Fakes;
 using PurchasePool.DataProvider.EF.Repositories;
 
-namespace PurchasePool.Web.Tests.PurchasePool.DataProvider.EF.Tests
+namespace PurchasePool.Web.Tests.PurchasePool.DataProvider.EF.Tests.Providers
 {
     [TestFixture]
     public class ProductProviderTests
@@ -24,33 +27,34 @@ namespace PurchasePool.Web.Tests.PurchasePool.DataProvider.EF.Tests
         private FakeDataContext CreateDataContext()
         {
             var context = new FakeDataContext();
-            var product1 = new Product
+            var product1 = new Good
             {
                 Id = product_1,
                 Name = "Product1",
-                Description = "Product one",
-                Categories = new List<Category>()
+                Description = "Product one"                
             };
-            var product2 = new Product
+            var product2 = new Good
             {
                 Id = product_2,
                 Name = "Product2",
-                Description = "Product two",
-                Categories = new List<Category>()
+                Description = "Product two",                
             };
 
-            var category1 = new Category
+            var category1 = new EntityCategory
             {
                 Id = category_1,
                 Name = "Category1",
-                Description = "Category one",
-                Products = new List<Product>()
+                Description = "Category one"                
             };
-            category1.Products.ToList().Add(product1);
-            product1.Categories.ToList().Add(category1);
+            var reference = new CategoryGoodReference
+            {
+                Id = Guid.NewGuid(),
+                Category = category1, 
+                Good = product1
+            };
 
-            context.SetCollectionAsDbSet(new List<Product> { product1, product2 });
-            context.SetCollectionAsDbSet(new List<Category> { category1});
+            context.SetCollectionAsDbSet(new List<Good> { product1, product2 });
+            context.SetCollectionAsDbSet(new List<EntityCategory> { category1});
             return context;
         }
         private ProductProvider CreateProvider(FakeDataContext context = null)

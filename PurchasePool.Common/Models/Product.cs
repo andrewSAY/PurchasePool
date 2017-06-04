@@ -9,7 +9,7 @@ namespace PurchasePool.Common.Models
         public string Name {get;set;}
         public DateTime DateCreate { get; set; }
         public string Description { get; set; }
-        public decimal WebLink { get; set; }
+        public string WebLink { get; set; }
         public IEnumerable<Category> Categories { get; set; }
     }
 }

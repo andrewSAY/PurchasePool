@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using PurchasePool.Common.Interfaces;
 using PurchasePool.Common.Models;
 using PurchasePool.DataProvider.EF.Interfaces;
 
-namespace PurchasePool.DataProvider.EF
+namespace PurchasePool.DataProvider.EF.Providers
 {
-    public class ProductProvider : IPoductProvider
+    public class CategoryProvider : ICategoryProvider
     {
+
         private readonly IRepository _repository;
 
-        public ProductProvider(IRepository repository)
+        public CategoryProvider(IRepository repository)
         {
             _repository = repository;
         }
@@ -20,22 +23,22 @@ namespace PurchasePool.DataProvider.EF
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Product> Get(Func<Product, bool> condition)
+        public IEnumerable<Category> Get(Func<Category, bool> condition)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Product> Get()
+        public IEnumerable<Category> Get()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Product> Set(IEnumerable<Product> collection)
+        public IEnumerable<Category> Set(IEnumerable<Category> collection)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Product> Set(Product singleton)
+        public IEnumerable<Category> Set(Category singleton)
         {
             throw new NotImplementedException();
         }
