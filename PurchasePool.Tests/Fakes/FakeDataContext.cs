@@ -64,7 +64,7 @@ namespace PurchasePool.Tests.Fakes
             DbSet<TEntity> targetField = null;
             foreach (var property in GetType().GetProperties().ToList())
             {
-                if (property.GetType() == typeof(DbSet<TEntity>))
+                if (property.PropertyType == typeof(DbSet<TEntity>))
                 {
                     targetField = property.GetValue(this) as DbSet<TEntity>;
                     break;

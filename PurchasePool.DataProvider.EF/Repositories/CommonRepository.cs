@@ -22,7 +22,7 @@ namespace PurchasePool.DataProvider.EF.Repositories
 
         private IQueryable<TEntity> Set<TEntity>() where TEntity : class
         {
-            return _context.Set<TEntity>().AsNoTracking();
+            return _context.Set<TEntity>();
         }
 
         public IEnumerable<TEntity> All<TEntity>() where TEntity : class

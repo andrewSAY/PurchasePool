@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
 using PurchasePool.Data.EF.Entities;
 using EntityCategory = PurchasePool.Data.EF.Entities.Category;
 using ModelCategory = PurchasePool.Common.Models.Category;
-using PurchasePool.DataProvider.EF;
+using PurchasePool.DataProvider.EF.Providers;
 using PurchasePool.Common.Models;
 using PurchasePool.Tests.Fakes;
 using PurchasePool.DataProvider.EF.Repositories;
@@ -55,6 +53,7 @@ namespace PurchasePool.Web.Tests.PurchasePool.DataProvider.EF.Tests.Providers
 
             context.SetCollectionAsDbSet(new List<Good> { product1, product2 });
             context.SetCollectionAsDbSet(new List<EntityCategory> { category1});
+            context.SetCollectionAsDbSet(new List<CategoryGoodReference> { reference });
             return context;
         }
         private ProductProvider CreateProvider(FakeDataContext context = null)
@@ -70,7 +69,16 @@ namespace PurchasePool.Web.Tests.PurchasePool.DataProvider.EF.Tests.Providers
                 Id = Guid.NewGuid(),
                 Name = name,
                 Description = $"{name} descripion",
-                Categories = new List<Category>()
+                Categories = new List<ModelCategory>()
+            };
+        }
+        public ModelCategory CreateCategory(Guid Id)
+        {
+            return new ModelCategory
+            {
+                Id = Id,
+                Name = "Category1",
+                Description = "Category one"
             };
         }
         #endregion  
@@ -84,42 +92,69 @@ namespace PurchasePool.Web.Tests.PurchasePool.DataProvider.EF.Tests.Providers
             Assert.AreEqual(expectedRecordsCount, returnedRecordsCount);
         }
         [Test]        
-        public void Get_WithConditionNameEqualsProduct1_CountReturnedRecordsEqualsOne()
+        public void GetByName_PassParameterEqualsProduct1_CountReturnedRecordsEqualsOne()
         {
             var provider = CreateProvider();
             var expectedRecordsCount = 1;
-            var condition = new Func<Product, bool>(p => p.Name == "Product1");
-            var returnedRecordsCount = provider.Get(condition).Count();
+            var returnedRecordsCount = provider.GetByName("Product1").Count();
 
             Assert.AreEqual(expectedRecordsCount, returnedRecordsCount);
         }
         [Test]
-        public void Get_WithConditionNameEqualsProduct1_ReturnedRecordHasNameProduct1()
+        public void GetByName_PassEmptyStringAsParameter_CountReturnedRecordsEqualsZero()
+        {
+            var provider = CreateProvider();
+            var expectedRecordsCount = 0;
+            var returnedRecordsCount = provider.GetByName(string.Empty).Count();
+
+            Assert.AreEqual(expectedRecordsCount, returnedRecordsCount);
+        }
+        [Test]
+        public void GetById_PassExistingId_ReturnedRecordNameEqualsProduct1()
         {
             var provider = CreateProvider();            
-            var condition = new Func<Product, bool>(p => p.Name == "Product1");
-            var returnedRecord = provider.Get(condition).FirstOrDefault();
+            var returnedRecord = provider.GetById(product_1);
 
             Assert.AreEqual("Product1", returnedRecord.Name);
-        }       
+        }
         [Test]
-        public void Get_WithConditionProductHasCategoryWitnNameCategory1_CountReturnedRecordsEqualsOne()
+        public void GetById_PassNotExistingId_ReturnedRecordsIsNull()
+        {
+            var provider = CreateProvider();
+            var newGuid = Guid.NewGuid();
+            var returnedRecord = provider.GetById(newGuid);
+
+            Assert.IsNull(returnedRecord);
+        }
+        [Test]
+        public void GetInCategories_PassExistingCategory_CountReturnedRecordsEqualsOne()
         {
             var provider = CreateProvider();
             var expectedRecordsCount = 1;
-            var condition = new Func<Product, bool>(p => p.Categories.Count(c => c.Name == "Category1") == 1);
-            var returnedRecordsCount = provider.Get(condition).Count();
+            var category = CreateCategory(category_1);
+            var returnedRecordsCount = provider.GetInCategories(new List<ModelCategory> { category }).Count();
 
             Assert.AreEqual(expectedRecordsCount, returnedRecordsCount);
         }
         [Test]
-        public void Get_WithConditionProductHasCategoryWitnNameCategory1_ReturnedRecordHasHasOnlyOneCategoryWithNameCategory1()
+        public void GetInCategories_PassExistingCategory_ReturnedRecordNameEqualsProduct1()
+        {
+            var provider = CreateProvider();           
+            var category = CreateCategory(category_1);
+            var returnedRecord = provider.GetInCategories(new List<ModelCategory> { category }).FirstOrDefault();
+
+            Assert.AreEqual("Product1", returnedRecord.Name);
+        }
+        [Test]
+        public void GetInCategories_PassExistingCategory_CountReturnedRecordsEqualsZero()
         {
             var provider = CreateProvider();
-            var condition = new Func<Product, bool>(p => p.Categories.Count(c => c.Name == "Category1") == 1);
-            var returnedRecord = provider.Get(condition).FirstOrDefault();
+            var expectedRecordsCount = 0;
+            var newId = Guid.NewGuid();
+            var category = CreateCategory(newId);
+            var returnedRecordsCount = provider.GetInCategories(new List<ModelCategory> { category }).Count();
 
-            Assert.AreEqual("Category1", returnedRecord.Categories.FirstOrDefault().Name);
+            Assert.AreEqual(expectedRecordsCount, returnedRecordsCount);
         }
         [Test]
         public void Set_PassedCollectionWitTwoItems_CountGoodRecordsInContextEqualsFour()

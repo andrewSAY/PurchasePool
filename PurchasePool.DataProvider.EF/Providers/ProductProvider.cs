@@ -27,7 +27,7 @@ namespace PurchasePool.DataProvider.EF.Providers
 
         public IEnumerable<Product> Get()
         {
-            return GetByCondition(p => true);
+            return GetByCondition(p => 1 == 1);
         }
 
         public Product GetById(Guid Id)
@@ -60,7 +60,7 @@ namespace PurchasePool.DataProvider.EF.Providers
 
         private IEnumerable<Product> GetByCondition(Expression<Func<Good, bool>> condition)
         {
-            var goods = _repository.FindBy<Good>(p => true);
+            var goods = _repository.FindBy(condition);
             var goodIds = goods.Select(g => g.Id);
             var references = _repository.FindBy<CategoryGoodReference>(r => goodIds.Contains(r.Good.Id))
                 .Select(r => new KeyValuePair<Guid, EntityCategory>(r.Good.Id, r.Category));
