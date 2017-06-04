@@ -5,15 +5,21 @@ using System.Data.Entity;
 using Moq;
 using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
-using PurchasePool.Common.Interfaces;
+using PurchasePool.Data.EF.Interfaces;
 using PurchasePool.Common.Models;
 using PurchasePool.Tests.TestsSupport;
+using PurchasePool.Data.EF.Entities;
 
 namespace PurchasePool.Tests.Fakes
 {
-    class FakeDataContext : IDataContext
+    class FakeDataContext : IMainContainer
     {
         public bool AreSavingSuccess = true;
+
+        public DbSet<Data.EF.Entities.Category> Categories { get; set; }
+        public DbSet<Good> Goods { get; set; }
+        public DbSet<CategoryGoodReference> CategoryGoodReferences { get; set; }
+
         public void Dispose()
         {
             throw new NotImplementedException();

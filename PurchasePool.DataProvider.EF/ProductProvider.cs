@@ -20,7 +20,7 @@ namespace PurchasePool.DataProvider.EF
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Product> Get(Func<Product> condition)
+        public IEnumerable<Product> Get(Func<Product, bool> condition)
         {
             throw new NotImplementedException();
         }

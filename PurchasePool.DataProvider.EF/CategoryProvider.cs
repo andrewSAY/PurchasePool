@@ -23,7 +23,7 @@ namespace PurchasePool.DataProvider.EF
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Category> Get(Func<Category> condition)
+        public IEnumerable<Category> Get(Func<Category, bool> condition)
         {
             throw new NotImplementedException();
         }
