@@ -1,0 +1,5 @@
+C:\Informicus\TestTask\PurchasePool\PurchasePool.Common\bin\Debug\PurchasePool.Common.dll
+C:\Informicus\TestTask\PurchasePool\PurchasePool.Common\bin\Debug\PurchasePool.Common.pdb
+C:\Informicus\TestTask\PurchasePool\PurchasePool.Common\obj\Debug\PurchasePool.Common.csprojResolveAssemblyReference.cache
+C:\Informicus\TestTask\PurchasePool\PurchasePool.Common\obj\Debug\PurchasePool.Common.dll
+C:\Informicus\TestTask\PurchasePool\PurchasePool.Common\obj\Debug\PurchasePool.Common.pdb

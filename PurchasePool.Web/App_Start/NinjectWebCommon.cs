@@ -5,6 +5,8 @@ namespace PurchasePool.Web.App_Start
 {
     using System;
     using System.Web;
+    using System.Linq;
+    using System.Web.Mvc;    
 
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 
@@ -61,6 +63,7 @@ namespace PurchasePool.Web.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            DependencyResolver.SetResolver(new DependencyResolver());
         }        
     }
 }
