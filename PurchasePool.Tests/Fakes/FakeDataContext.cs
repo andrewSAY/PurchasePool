@@ -68,7 +68,7 @@ namespace PurchasePool.Tests.Fakes
             return targetField;
         }
 
-        public void SetCollectionAsDbSet<T>(IQueryable<T> value) where T : class
+        public void SetCollectionAsDbSet<T>(List<T> value) where T : class
         {
             var mockSet = new Mock<DbSet<T>>();
 
@@ -78,16 +78,16 @@ namespace PurchasePool.Tests.Fakes
 
             mockSet.As<IQueryable<T>>()
                 .Setup(m => m.Provider)
-                .Returns(new TestDbAsyncQueryProvider<T>(value.Provider));
+                .Returns(() => new TestDbAsyncQueryProvider<T>(value.AsQueryable().Provider));
 
-            mockSet.As<IQueryable<T>>().Setup(m => m.Expression).Returns(value.Expression);
-            mockSet.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(value.ElementType);
-            mockSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(value.GetEnumerator());
+            mockSet.As<IQueryable<T>>().Setup(m => m.Expression).Returns(() => value.AsQueryable().Expression);
+            mockSet.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(() => value.AsQueryable().ElementType);
+            mockSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(() => value.GetEnumerator());
 
-            mockSet.Setup(d => d.Add(It.IsAny<T>())).Callback<T>((s) => value.ToList().Add(s));
-            mockSet.Setup(d => d.Remove(It.IsAny<T>())).Callback<T>((s) => value.ToList().Remove(s));
-            mockSet.Setup(d => d.RemoveRange(It.IsAny<IEnumerable<T>>())).Callback<IEnumerable<T>>((s) => {
-                s.ToList().ForEach(s_ => value.ToList().Remove(s_));
+            mockSet.Setup(d => d.Add(It.IsAny<T>())).Callback<T>(s => value.Add(s));
+            mockSet.Setup(d => d.Remove(It.IsAny<T>())).Callback<T>(s => value.Remove(s));
+            mockSet.Setup(d => d.RemoveRange(It.IsAny<IEnumerable<T>>())).Callback<IEnumerable<T>>(s => {
+                s.ToList().ForEach(s_ => value.Remove(s_));
             });
             var propertyList = GetType().GetProperties().ToList();
             foreach (var property in propertyList)
