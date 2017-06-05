@@ -157,6 +157,16 @@ namespace PurchasePool.Web.Tests.PurchasePool.DataProvider.EF.Tests.Providers
             Assert.AreEqual(expectedRecordsCount, returnedRecordsCount);
         }
         [Test]
+        public void GetInCategories_PassExistingCategory_ReturnedRecordsHasCategoryWithNameCategory1()
+        {
+            var provider = CreateProvider();
+            var newId = Guid.NewGuid();
+            var category = CreateCategory(newId);
+            var returnedRecord = provider.GetInCategories(new List<ModelCategory> { category }).FirstOrDefault();
+
+            Assert.AreEqual("Category1", returnedRecord.Categories.FirstOrDefault().Name);
+        }
+        [Test]
         public void Set_PassedCollectionWitTwoItems_CountGoodRecordsInContextEqualsFour()
         {
             var context = CreateDataContext();

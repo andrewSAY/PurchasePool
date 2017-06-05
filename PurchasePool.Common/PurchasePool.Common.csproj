@@ -50,6 +50,8 @@
     <Compile Include="Interfaces\DI\ICommonDependecyResolver.cs" />
     <Compile Include="Interfaces\DI\IExportResolver.cs" />
     <Compile Include="Interfaces\IDataProvider.cs" />
+    <Compile Include="Interfaces\Providers\ICategoryProvider.cs" />
+    <Compile Include="Interfaces\Providers\IPoductProvider.cs" />
     <Compile Include="Interfaces\IServiceAction.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Product.cs" />

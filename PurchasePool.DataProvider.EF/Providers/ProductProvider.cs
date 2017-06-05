@@ -4,7 +4,7 @@ using System.Linq;
 using PurchasePool.Common.Interfaces;
 using PurchasePool.Common.Models;
 using PurchasePool.Data.EF.Entities;
-using PurchasePool.DataProvider.EF.Interfaces;
+using PurchasePool.Common.Interfaces.Providers;
 using System.Linq.Expressions;
 using PurchasePool.DataProvider.EF.Actions;
 using EntityCategory = PurchasePool.Data.EF.Entities.Category;

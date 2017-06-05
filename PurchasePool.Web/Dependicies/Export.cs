@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using PurchasePool.Common.Interfaces.DI;
 using PurchasePool.Common.Interfaces;
 using PurchasePool.DataProvider.EF.Providers;
-using PurchasePool.DataProvider.EF.Interfaces;
+using PurchasePool.Common.Interfaces.Providers;
 
 namespace PurchasePool.Web.Dependicies
 {

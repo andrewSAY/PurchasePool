@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PurchasePool.Common.Interfaces;
 using PurchasePool.Common.Models;
-using PurchasePool.DataProvider.EF.Interfaces;
+using PurchasePool.Common.Interfaces.Providers;
 
 namespace PurchasePool.DataProvider.EF.Providers
 {
