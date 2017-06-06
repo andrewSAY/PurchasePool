@@ -33,12 +33,12 @@ namespace PurchasePool.DataProvider.EF.Providers
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Category> Set(IEnumerable<Category> collection)
+        public void Set(IEnumerable<Category> collection)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Category> Set(Category singleton)
+        public void Set(Category singleton)
         {
             throw new NotImplementedException();
         }

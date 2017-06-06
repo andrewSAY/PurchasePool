@@ -48,15 +48,17 @@ namespace PurchasePool.DataProvider.EF.Providers
             return new ConvertGoodsToProducts(references.ToList()).ExecuteAction();
         }
 
-        public IEnumerable<Product> Set(IEnumerable<Product> collection)
+        public void Set(IEnumerable<Product> collection)
         {
-            throw new NotImplementedException();
+            var pairs = new ConvertProductsToGoods(collection.ToList()).ExecuteAction();
+            SaveGoods(pairs);
+            SaveRefernces(pairs);
         }
 
-        public IEnumerable<Product> Set(Product singleton)
+        public void Set(Product singleton)
         {
-            throw new NotImplementedException();
-        }
+            Set(new List<Product> { singleton });
+        }        
 
         private IEnumerable<Product> GetByCondition(Expression<Func<Good, bool>> condition)
         {
@@ -65,6 +67,46 @@ namespace PurchasePool.DataProvider.EF.Providers
             var references = _repository.FindBy<CategoryGoodReference>(r => goodIds.Contains(r.Good.Id))
                 .Select(r => new KeyValuePair<Guid, EntityCategory>(r.Good.Id, r.Category));
             return new ConvertGoodsToProducts(goods.ToList(), references.ToList()).ExecuteAction();
+        }
+        private void SaveGoods(List<KeyValuePair<Good, List<EntityCategory>>> pairs)
+        {
+            var goodIdCollection = pairs.Select(i => i.Key.Id);
+            var existingGoodsCollection = _repository.FindBy<Good>(g => goodIdCollection.Contains(g.Id))
+                .Select(g => g.Id)
+                .ToList();
+            pairs.ForEach(pair => {
+                if(existingGoodsCollection.Contains(pair.Key.Id))
+                {
+                    _repository.CommiteInterface.Update(pair.Key);
+                }
+                else
+                {
+                    _repository.CommiteInterface.Add(pair.Key);
+                }
+            });
+        }       
+        private void SaveRefernces(List<KeyValuePair<Good, List<EntityCategory>>> pairs)
+        {            
+            var goodIdCollection = pairs.Select(i => i.Key.Id);
+            var categoryIdCollection = pairs.Select(i => i.Value.Aggregate((a,b) => a))
+                .Select(c => c.Id);
+            var existingReferencesCollection = _repository
+                .FindBy<CategoryGoodReference>(r => goodIdCollection.Contains(r.Good.Id) && goodIdCollection.Contains(r.Category.Id))
+                .ToList();            
+            pairs.ForEach(pair => {
+                pair.Value.ForEach(category => {
+                    var reference = existingReferencesCollection
+                    .FirstOrDefault(r => r.Good.Id == pair.Key.Id && r.Category.Id == category.Id);
+                    if (reference != null)
+                    {
+                        _repository.CommiteInterface.Update(reference);
+                    }
+                    else
+                    {
+                        _repository.CommiteInterface.Add(reference);
+                    }
+                });
+            });
         }
     }
 }

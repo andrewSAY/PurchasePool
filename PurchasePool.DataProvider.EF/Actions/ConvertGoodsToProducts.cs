@@ -13,19 +13,16 @@ namespace PurchasePool.DataProvider.EF.Actions
     {
         private readonly List<Good> _goods;
         private readonly List<KeyValuePair<Guid, EntityCategory>> _refernces;
-        private List<ModelCategory> _categories;
         public ConvertGoodsToProducts(List<Good> goods, List<KeyValuePair<Guid, EntityCategory>> references)
         {
             _goods = goods;
             _refernces = references;
-            _categories = new List<ModelCategory>();
         }
 
         public ConvertGoodsToProducts(List<CategoryGoodReference> references)
         {
             _goods = references.Select(r => r.Good).ToList();
             _refernces = references.Select(r => new KeyValuePair<Guid, EntityCategory>(r.Good.Id, r.Category)).ToList();
-            _categories = new List<ModelCategory>();
         }
 
         public List<Product> ExecuteAction()
@@ -44,8 +41,7 @@ namespace PurchasePool.DataProvider.EF.Actions
             {
                 Id = category.Id,
                 Name = category.Name,
-                Description = category.Description,
-                Products = new List<Product>()
+                Description = category.Description
             };
         }
 
@@ -66,16 +62,9 @@ namespace PurchasePool.DataProvider.EF.Actions
         {            
             _refernces.Where(r => r.Key == product.Id)                
                 .ToList()
-                .ForEach(r => {
-                    var category = _categories.FirstOrDefault(c => c.Id == r.Value.Id);
-                    if(category != null)
-                    { 
-                        category.Products.ToList().Add(product);
-                        return;
-                    }
-                    category = ConvertCategory(r.Value);
-                    category.Products.ToList().Add(product);
-                    _categories.Add(category);
+                .ForEach(r => {                   
+                    var category = ConvertCategory(r.Value);                                        
+                    product.Categories.Add(category);
                 });
         }
     }

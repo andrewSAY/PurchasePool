@@ -6,8 +6,8 @@ namespace PurchasePool.Common.Interfaces
     public interface IDataProvider<T>
     {       
         IEnumerable<T> Get();
-        IEnumerable<T> Set(IEnumerable<T> collection);
-        IEnumerable<T> Set(T singleton);
+        void Set(IEnumerable<T> collection);
+        void Set(T singleton);        
         void Commit();
     }
 }

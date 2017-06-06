@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using PurchasePool.Common.Interfaces.DI;
 using PurchasePool.Data.EF;
 using PurchasePool.DataProvider.EF;
-using PurchasePool.DataProvider.EF.Interfaces;
 using PurchasePool.DataProvider.EF.Repositories;
 using PurchasePool.Common.Interfaces;
 

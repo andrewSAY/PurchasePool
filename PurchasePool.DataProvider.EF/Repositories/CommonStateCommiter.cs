@@ -40,7 +40,11 @@ namespace PurchasePool.DataProvider.EF.Repositories
         public void Add<TEntity>(TEntity entity) where TEntity : class
         {
             _context.Set<TEntity>().Add(entity);
-            (_context as DbContext).Entry(entity).State = EntityState.Added;
+            var dbContext = _context as DbContext;
+            if (dbContext != null)
+            {
+                dbContext.Entry(entity).State = EntityState.Added;
+            }
         }
 
         public void Add<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
@@ -55,8 +59,12 @@ namespace PurchasePool.DataProvider.EF.Repositories
 
         public void Update<TEntity>(TEntity entity) where TEntity : class
         {
+            var dbContext = _context as DbContext;
             _context.Set<TEntity>().Attach(entity);
-            (_context as DbContext).Entry(entity).State = EntityState.Modified;
+            if(dbContext != null)
+            {
+                dbContext.Entry(entity).State = EntityState.Modified;
+            }            
         }
 
         public int CommitState()
