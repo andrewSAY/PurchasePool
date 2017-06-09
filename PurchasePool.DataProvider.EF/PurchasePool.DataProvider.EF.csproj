@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\ConvertCategories.cs" />
     <Compile Include="Actions\ConvertProductsToGoods.cs" />
     <Compile Include="Providers\CategoryProvider.cs" />
     <Compile Include="Actions\ConvertGoodsToProducts.cs" />

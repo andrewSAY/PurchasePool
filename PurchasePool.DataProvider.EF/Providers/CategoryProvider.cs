@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
 using PurchasePool.Common.Interfaces;
-using PurchasePool.Common.Models;
+using PurchasePool.DataProvider.EF.Actions;
 using PurchasePool.Common.Interfaces.Providers;
+using EntityCategory = PurchasePool.Data.EF.Entities.Category;
+using ModelCategory = PurchasePool.Common.Models.Category;
 
 namespace PurchasePool.DataProvider.EF.Providers
 {
@@ -20,27 +21,49 @@ namespace PurchasePool.DataProvider.EF.Providers
         }
         public void Commit()
         {
-            throw new NotImplementedException();
+            _repository.CommiteInterface.CommitState();
         }
 
-        public IEnumerable<Category> Get(Func<Category, bool> condition)
+        public IEnumerable<ModelCategory> GetByName(string name)
         {
-            throw new NotImplementedException();
+            return GetByCondition(c => c.Name == name);
+        }
+        public ModelCategory GetById(Guid Id)
+        {
+            return GetByCondition(c => c.Id == Id).FirstOrDefault();
         }
 
-        public IEnumerable<Category> Get()
+        public IEnumerable<ModelCategory> Get()
         {
-            throw new NotImplementedException();
+            return GetByCondition(c => c == c);
         }
 
-        public void Set(IEnumerable<Category> collection)
+        public void Set(IEnumerable<ModelCategory> collection)
         {
-            throw new NotImplementedException();
+            var identityCollection = collection.Select(c => c.Id);
+            var existingCategoryIdsCollection = _repository.FindBy<EntityCategory, Guid>(c => identityCollection.Contains(c.Id), c => c.Id, new List<string>());
+            var entityCollection = new ConvertCategories<EntityCategory>(collection.ToList()).ExecuteAction();
+            entityCollection.ForEach(category => {
+                if(existingCategoryIdsCollection.FirstOrDefault(c => c == category.Id) != Guid.Empty)
+                {
+                    _repository.CommiteInterface.Update(category);
+                }
+                else
+                {
+                    _repository.CommiteInterface.Add(category);
+                }
+            });
         }
 
-        public void Set(Category singleton)
+        public void Set(ModelCategory singleton)
         {
-            throw new NotImplementedException();
+            Set(new List<ModelCategory> { singleton });
+        }
+
+        private IEnumerable<ModelCategory> GetByCondition(Expression<Func<EntityCategory, bool>> condition)
+        {
+            var categories = _repository.FindBy(condition).ToList();
+            return new ConvertCategories<ModelCategory>(categories).ExecuteAction();
         }
     }
 }
