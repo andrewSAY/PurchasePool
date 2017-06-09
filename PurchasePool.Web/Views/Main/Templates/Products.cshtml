@@ -1,0 +1,23 @@
+﻿<div ng-controller="ProductListController">
+    <button class="button" ng-click="New()">Add new</button>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Web-link</th>
+                <th>Categories</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="product in Products">
+                <td>{{product.Name}}</td>
+                <td>{{product.Description}}</td>
+                <td><a ng-href="{{product.WebLink}}" target="_blank">{{product.WebLink}}</a></td>
+                <td>{{GetCategories(product)}}</td>
+                <td><button class="button" ng-click="Edit(product)">Edit</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
