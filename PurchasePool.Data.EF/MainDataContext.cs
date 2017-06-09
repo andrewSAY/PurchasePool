@@ -73,7 +73,13 @@ namespace PurchasePool.Data.EF
                 var addedEntities = ChangeTracker.Entries<Entity>()
                     .Where(entry => entry.State == EntityState.Added)
                     .Select(entry => entry.Entity);
-                addedEntities.ToList().ForEach(entity => entity.DateCreate = now);
+                addedEntities.ToList().ForEach(entity => {
+                    entity.DateCreate = now;
+                    if (entity.Id == null || entity.Id == Guid.Empty)
+                    {
+                        entity.Id = Guid.NewGuid();
+                    }
+                });
             }
         }
     }

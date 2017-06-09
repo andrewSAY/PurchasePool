@@ -33,10 +33,11 @@ namespace PurchasePool.Web.App_Start
             var commonResolver = new CommonDependecyResolver(kernel);
             AppDomain.CurrentDomain.GetAssemblies().Where(a => a.GetName().Name.StartsWith("PurchasePool"))
                 .SelectMany(a => a.GetTypes())
-                .Where(t => t.IsAssignableFrom(typeof(IExportResolver)) && !t.IsInterface)
+                .Where(t => typeof(IExportResolver).IsAssignableFrom(t) && !t.IsInterface)
                 .ToList()
                 .ForEach(typeResolve => {
                     var resolver = Activator.CreateInstance(typeResolve) as IExportResolver;
+                    resolver.Resolver = commonResolver;
                     resolver.Resolve();
                 });
         }

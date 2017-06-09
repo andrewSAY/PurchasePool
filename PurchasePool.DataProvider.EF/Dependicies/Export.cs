@@ -8,6 +8,8 @@ using PurchasePool.Data.EF;
 using PurchasePool.DataProvider.EF;
 using PurchasePool.DataProvider.EF.Repositories;
 using PurchasePool.Common.Interfaces;
+using PurchasePool.DataProvider.EF.Providers;
+using PurchasePool.Common.Interfaces.Providers;
 
 namespace PurchasePool.DataProvider.EF.Dependicies
 {
@@ -19,6 +21,8 @@ namespace PurchasePool.DataProvider.EF.Dependicies
         {
             Resolver.BindTo<IRepository, CommonRepository>();
             Resolver.BindToInScopeRequest<IDataContext, MainDataContext>();
+            Resolver.BindTo<IPoductProvider, ProductProvider>();
+            Resolver.BindTo<ICategoryProvider, CategoryProvider>();
         }
     }
 }

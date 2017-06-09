@@ -59,6 +59,10 @@
     <Compile Include="Interfaces\IEntityStateCommitEF.cs" />
     <Compile Include="Interfaces\IMainContainer.cs" />
     <Compile Include="MainDataContext.cs" />
+    <Compile Include="Migrations\201706092124260_1.cs" />
+    <Compile Include="Migrations\201706092124260_1.Designer.cs">
+      <DependentUpon>201706092124260_1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\MainConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -66,7 +70,11 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201706092124260_1.resx">
+      <DependentUpon>201706092124260_1.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PurchasePool.Common\PurchasePool.Common.csproj">
       <Project>{7a3d8e95-824c-4d3f-be34-5874badf8e51}</Project>
