@@ -22,9 +22,9 @@ namespace PurchasePool.Data.EF.Initializers
                     });
 
                     context.Goods.AddRange(new List<Good>() {
-                        new Good {Name = "Good product", Description = "A good product", WebLink = @"http:\\products.com\goodproduct"},
-                        new Good {Name = "Not good product", Description = "A not good product", WebLink = @"http:\\products.com\anotgoodproduct"},
-                        new Good {Name = "Bad product", Description = "A bad product", WebLink = @"http:\\products.com\abadproduct"}
+                        new Good {Name = "Good product", Description = "A good product", WebLink = @"http://products.com/goodproduct"},
+                        new Good {Name = "Not good product", Description = "A not good product", WebLink = @"http://products.com/anotgoodproduct"},
+                        new Good {Name = "Bad product", Description = "A bad product", WebLink = @"http://products.com/abadproduct"}
                     });
 
                     context.SaveChanges();

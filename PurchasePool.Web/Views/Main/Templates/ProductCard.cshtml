@@ -1,0 +1,53 @@
+﻿
+@{
+    Layout = "~/Views/Layouts/_GeneralLayout.cshtml";
+}
+    <h2>{{Caption}}</h2> 
+        <form name="productForm" class="form-group" style="max-width: 1000px; margin-left:150px;" novalidate>
+            <div ng-show="SavingError !== null">
+                <div class="valiate-tip">Happened some error during the saving operation. Saving has failed.</div>
+                <div class="valiate-tip">{{SavingError}}</div>
+            </div>
+            <label class="col-2 col-form-label field-label">Name</label>
+            <div class="col-10">
+                <input class="form-control" type="text" ng-model="Product.Name" name="name" maxlength="255" required="" />
+            </div>
+            <div ng-show="productForm.name.$touched">
+                <div class="valiate-tip" ng-show="productForm.name.$error.required">The field "Name" must be filled</div>
+            </div>
+            <label class="col-2 col-form-label field-label">Description</label>
+            <div class="col-10">
+                <textarea ng-model="Product.Description" class="form-control" name="description" maxlength="255"></textarea>
+            </div>
+            <label class="col-2 col-form-label field-label">Web-link</label>
+            <div class="col-10">
+                <input type="url" ng-model="Product.WebLink" class="form-control" name="weblink" maxlength="512" required=""/>
+            </div>
+            <div  ng-show="productForm.weblink.$touched">
+                <div class="valiate-tip" ng-show="productForm.weblink.$error.url">This isn't right form of web-link. Must be as "http://hostname.com/" or something similar</div>
+                <div class="valiate-tip" ng-show="productForm.weblink.$error.required">The field "Web-link" must be filled</div>
+            </div>
+            <label  class="col-2 col-form-label field-label">Categories</label>            
+            <div class="valiate-tip" ng-show="productForm.category.$error.required">You must select one or more categories for the product</div>
+            <div ng-repeat="category in Categories">
+                <div class="form-check-label" ng-click="CategorySelectedChange(category)" style="cursor:pointer;">
+                    <input type="checkbox" class="form-check-input"  ng-model="category.IsChecked" name="category" ng-required="SelectedCategoriesCount===0" ng-disabled="1===1"/>
+                    {{category.Name}}
+                </div>
+            </div>
+            <input ng-disabled="productForm.$invalid" type="submit" value="Save"class="btn btn-primary" ng-click="Save()" />
+            <button ng-click="Cancel()" class="btn">Cancel</button>
+        </form>
+    <style>
+        div.valiate-tip {
+            color: red;
+            float: left;
+            font-size: 110%;
+            width: 1000px;
+        }
+        form label.field-label {
+            float: left;
+            width: 1000px;
+        }
+    </style>
+

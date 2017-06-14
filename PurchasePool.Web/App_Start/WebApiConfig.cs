@@ -16,7 +16,7 @@ namespace PurchasePool.Web
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "Api/{controller}/{id}",
+                routeTemplate: "Api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
         }

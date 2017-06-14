@@ -12,17 +12,19 @@ namespace PurchasePool.DataProvider.EF.Repositories
     public class CommonRepository : IRepository
     {
         protected readonly IDataContextEF _context;
+        protected readonly bool _noTracking;
         public IEntityStateCommit CommiteInterface { get; private set; }
 
         public CommonRepository(IDataContext context)
         {
             _context = context as IDataContextEF;
             CommiteInterface = new CommonStateCommiter(context);
+            _noTracking = (_context as DbContext) != null;
         }
 
         private IQueryable<TEntity> Set<TEntity>() where TEntity : class
         {
-            return _context.Set<TEntity>();
+            return _noTracking ? _context.Set<TEntity>().AsNoTracking() : _context.Set<TEntity>();
         }
 
         public IEnumerable<TEntity> All<TEntity>() where TEntity : class

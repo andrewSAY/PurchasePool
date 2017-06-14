@@ -23,7 +23,14 @@ namespace PurchasePool.DataProvider.EF.Repositories
 
         public void Remove<TEntity>(TEntity entity) where TEntity : class
         {
+            _context.Set<TEntity>().Attach(entity);
             _context.Set<TEntity>().Remove(entity);
+            var dbContext = _context as DbContext;
+            if (dbContext != null)
+            {
+                dbContext.Entry(entity).State = EntityState.Deleted;
+                dbContext.ChangeTracker.DetectChanges();                
+            }
         }
 
         public void Affected<TEntity>(TEntity entity) where TEntity : class
@@ -43,6 +50,7 @@ namespace PurchasePool.DataProvider.EF.Repositories
             var dbContext = _context as DbContext;
             if (dbContext != null)
             {
+                dbContext.ChangeTracker.DetectChanges();
                 dbContext.Entry(entity).State = EntityState.Added;
             }
         }
@@ -59,10 +67,11 @@ namespace PurchasePool.DataProvider.EF.Repositories
 
         public void Update<TEntity>(TEntity entity) where TEntity : class
         {
-            var dbContext = _context as DbContext;
+            var dbContext = _context as DbContext;            
             _context.Set<TEntity>().Attach(entity);
             if(dbContext != null)
             {
+                dbContext.ChangeTracker.DetectChanges();
                 dbContext.Entry(entity).State = EntityState.Modified;
             }            
         }

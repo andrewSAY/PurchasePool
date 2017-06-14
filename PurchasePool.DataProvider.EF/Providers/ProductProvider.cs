@@ -84,28 +84,44 @@ namespace PurchasePool.DataProvider.EF.Providers
                     _repository.CommiteInterface.Add(pair.Key);
                 }
             });
-        }       
+        }      
         private void SaveRefernces(List<KeyValuePair<Good, List<EntityCategory>>> pairs)
         {            
-            var goodIdCollection = pairs.Select(i => i.Key.Id);
-            var categoryIdCollection = pairs.Select(i => i.Value.Aggregate((a,b) => a))
-                .Select(c => c.Id);
+            var goodIdCollection = pairs.Select(i => i.Key.Id);            
             var existingReferencesCollection = _repository
-                .FindBy<CategoryGoodReference>(r => goodIdCollection.Contains(r.Good.Id) && goodIdCollection.Contains(r.Category.Id))
+                .FindBy<CategoryGoodReference>(r => goodIdCollection.Contains(r.Good.Id))
                 .ToList();            
             pairs.ForEach(pair => {
                 pair.Value.ForEach(category => {
+                    _repository.CommiteInterface.Update(category);
                     var reference = existingReferencesCollection
                     .FirstOrDefault(r => r.Good.Id == pair.Key.Id && r.Category.Id == category.Id);
-                    if (reference != null)
+                    if (reference == null)
                     {
-                        _repository.CommiteInterface.Update(reference);
-                    }
-                    else
-                    {
+                        reference = new CategoryGoodReference
+                        {
+                            Category = category,
+                            Good = pair.Key
+                        };
                         _repository.CommiteInterface.Add(reference);
                     }
                 });
+                RemoveOldReferences(existingReferencesCollection, pair);
+            });
+        }
+
+        private void RemoveOldReferences(List<CategoryGoodReference> existingReferencesCollection, KeyValuePair<Good, List<EntityCategory>> pair)
+        {            
+            existingReferencesCollection.Where(r => r.Good.Id == pair.Key.Id)
+                .ToList()
+                .ForEach(reference =>{
+                    var category = pair.Value.FirstOrDefault(c => c.Id == reference.Category.Id);
+                    if (category == null)
+                    {
+                        reference.Good = pair.Key;
+                        reference.Category = category;
+                        _repository.CommiteInterface.Remove(reference);
+                    }
             });
         }
     }

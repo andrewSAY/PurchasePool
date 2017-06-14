@@ -197,6 +197,22 @@ namespace PurchasePool.Web.Tests.PurchasePool.DataProvider.EF.Tests.Providers
             Assert.AreEqual(expectedRecordsCount, recordsCountInContext);
         }
         [Test]
+        public void Set_PassedCollectionWithOneItemAndOneCategory_CountCategoriesInContextEqualsOne()
+        {
+            var context = CreateDataContext();
+            var provider = CreateProvider(context);
+            var newProduct = CreateNewProduct("NewProduct1");
+            var category = new ModelCategory { Id = category_1 };
+            newProduct.Categories.Add(category);
+            var expectedRecordsCount = 1;
+
+            provider.Set(newProduct);
+
+            var recordsCountInContext = context.Categories.Count();
+
+            Assert.AreEqual(expectedRecordsCount, recordsCountInContext);
+        }
+        [Test]
         public void Set_PassedExistingProductWithOtherName_CountGoodRecordsInContextEqualsTwo()
         {
             var context = CreateDataContext();
@@ -209,6 +225,20 @@ namespace PurchasePool.Web.Tests.PurchasePool.DataProvider.EF.Tests.Providers
             var recordsCountInContext = context.Goods.Count();
 
             Assert.AreEqual(expectedRecordsCount, recordsCountInContext);
-        }       
+        }
+        [Test]
+        public void Set_PassedExistingProductWithoutCategories_CountReferenceRecordsInContextEqualsZer()
+        {
+            var context = CreateDataContext();
+            var provider = CreateProvider(context);
+            var product = new Product { Id = product_1, Categories = new List<ModelCategory>() };
+            var expectedRecordsCount = 0;
+
+            provider.Set(product);
+
+            var recordsCountInContext = context.CategoryGoodReferences.Count();
+
+            Assert.AreEqual(expectedRecordsCount, recordsCountInContext);
+        }
     }
 }

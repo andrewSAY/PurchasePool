@@ -20,7 +20,8 @@ namespace PurchasePool.Data.EF
             {
                 Database.SetInitializer(new NormalInitializer());
             }
-
+            Configuration.AutoDetectChangesEnabled = false;
+            Configuration.ValidateOnSaveEnabled = false;
             Database.Initialize(false);
         }
 
@@ -43,10 +44,9 @@ namespace PurchasePool.Data.EF
                  .IsRequired()
                  .IsUnicode()
                  .HasMaxLength(255);
-            modelBuilder.Entity<Good>().Property(e => e.Description)
-                 .IsRequired()
+            modelBuilder.Entity<Good>().Property(e => e.Description)                 
                  .IsUnicode()
-                 .HasMaxLength(255);
+                 .HasMaxLength(1024);
             modelBuilder.Entity<Good>().Property(e => e.WebLink)
                  .IsRequired()
                  .IsUnicode()
@@ -70,10 +70,10 @@ namespace PurchasePool.Data.EF
             if (ChangeTracker.HasChanges())
             {
                 var now = DateTime.UtcNow;
-                var addedEntities = ChangeTracker.Entries<Entity>()
-                    .Where(entry => entry.State == EntityState.Added)
+                var entities = ChangeTracker.Entries<Entity>()
+                    .Where(entry => entry.State == EntityState.Added || entry.State == EntityState.Modified)
                     .Select(entry => entry.Entity);
-                addedEntities.ToList().ForEach(entity => {
+                entities.ToList().ForEach(entity => {
                     entity.DateCreate = now;
                     if (entity.Id == null || entity.Id == Guid.Empty)
                     {

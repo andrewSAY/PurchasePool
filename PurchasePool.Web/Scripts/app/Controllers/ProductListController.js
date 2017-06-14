@@ -17,7 +17,7 @@
     }
 
     $scope.New = function () {
-        $state.gp('products.new');
+        $state.go('products.new');
     }
 }
 
